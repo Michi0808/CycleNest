@@ -1,8 +1,7 @@
 import express from 'express';
+import sendEvent from './controller/eventController.js';
 const router = express.Router();
 
-router.post('/', () => {
-  console.log('test');
-});
+router.post('/integration/:calendarID', sendEvent);
 
 export default router;
