@@ -1,8 +1,10 @@
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import React from 'react';
 
-const events = [{ title: 'Meeting', start: new Date() }];
+const events = [
+  { title: 'Meeting', start: new Date() },
+  { title: 'event 2', date: '2026-01-02' },
+];
 
 export default function Calendar() {
   return (
@@ -10,7 +12,7 @@ export default function Calendar() {
       <FullCalendar
         plugins={[dayGridPlugin]}
         initialView="dayGridMonth"
-        weekwnds={false}
+        weekends={true}
         events={events}
         eventContent={renderEventContent}
       />

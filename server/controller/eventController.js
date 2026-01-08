@@ -22,26 +22,3 @@ export default async function sendEvent(req, res) {
     res.sendStatus(500);
   }
 }
-
-// function initiate() {
-//   gapi.client
-//     .request({
-//       path: `https://www.googleapis.com/calendar/v3/calendars/${calendarID}/events`,
-//       method: 'POST',
-//       body: event,
-//       headers: {
-//         'Content-type': 'application/json',
-//         Authorization: `Bearer ${accessToken}`,
-//       },
-//     })
-//     .then(
-//       (response) => {
-//         return [true, response];
-//       },
-//       function (err) {
-//         console.log(err);
-//         return [false, err];
-//       }
-//     );
-// }
-// gapi.load('client', initiate);
