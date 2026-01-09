@@ -15,7 +15,7 @@ export default function Menubar() {
       >
         AdminMart
       </Logo>
-      <MenuItem icon={<Cached />} component={Link} link="/tes">
+      <MenuItem icon={<Cached />} component={Link} link="/cycle">
         Cycle Settings
       </MenuItem>
       <MenuItem icon={<Google />} component={Link} link="/test">
