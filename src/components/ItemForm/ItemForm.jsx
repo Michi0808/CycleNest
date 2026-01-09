@@ -9,6 +9,7 @@ export default function ItemForm() {
   };
 
   const [state, setState] = useState(initialState);
+  const [items, setItems] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,16 +22,8 @@ export default function ItemForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // const { email, password, firstName, lastName } = state;
-    // const user = { email, password, firstName, lastName };
-    // const res = await apiService.register(user);
-    // if (res.error) {
-    //   alert(`${res.message}`);
-    //   setState(initialState);
-    // } else {
-    //   props.setIsAuthenticated(true);
-    //   auth.login(() => navigate('/profile'));
-    // }
+    const { CycleTitle, title, length, color } = state;
+    const newItem = { title, length: parseInt(length), color };
   };
 
   return (
