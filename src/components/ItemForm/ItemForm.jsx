@@ -1,18 +1,22 @@
 import { useState } from 'react';
+import CycleCards from '../CycleCards/CycleCards';
 
 export default function ItemForm() {
   const initialState = {
     CycleTitle: '',
     title: '',
-    length: 1,
-    color: '',
+    length: '',
+    color: '#ffffff',
   };
 
   const [state, setState] = useState(initialState);
   const [items, setItems] = useState([]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    let { name, value } = e.target;
+    if (name === 'length') {
+      value = Number(value);
+    }
     setState((prevState) => ({
       ...prevState,
       [name]: value,
@@ -21,86 +25,95 @@ export default function ItemForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+  };
 
-    const { CycleTitle, title, length, color } = state;
-    const newItem = { title, length: parseInt(length), color };
+  const addItem = () => {
+    const { title, length, color } = state;
+    setItems([...items, { title: title, length: length, color: color }]);
+
+    //Clear the form
+    setState(initialState);
   };
 
   return (
-    <div className="w-full max-w-xs">
-      <section>
-        <form
-          className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-          onSubmit={handleSubmit}
-        >
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Cycle Title
-            </label>
-            <input
-              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              type="text"
-              placeholder="e.g., Weekly Routine"
-              name="CycleTitle"
-              value={state.CycleTitle}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Cycle Item
-            </label>
-            <input
-              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              type="text"
-              placeholder="e.g., Workout"
-              name="title"
-              value={state.title}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Length (Days)
-            </label>
-            <input
-              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              type="number"
-              placeholder="Enter the number of days"
-              name="length"
-              value={state.length}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Color
-            </label>
-            <input
-              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              type="text"
-              placeholder="e.g., blue"
-              name="color"
-              value={state.color}
-              onChange={handleChange}
-            />
-          </div>
-        </form>
-      </section>
-      <div className="flex items-center justify-between">
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          type="button"
-        >
-          Add Item
-        </button>
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          type="button"
-        >
-          Save Cycle
-        </button>
+    <div className="flex">
+      <div className="w-full max-w-xs">
+        <section>
+          <form
+            className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+            onSubmit={handleSubmit}
+          >
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2">
+                Cycle Title
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                type="text"
+                placeholder="e.g., Weekly Routine"
+                name="CycleTitle"
+                value={state.CycleTitle}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2">
+                Cycle Item
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                type="text"
+                placeholder="e.g., Workout"
+                name="title"
+                value={state.title}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2">
+                Length (Days)
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                type="number"
+                placeholder="Enter the number of days"
+                name="length"
+                value={state.length}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2">
+                Color
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full px-3 leading-tight focus:outline-none focus:shadow-outline"
+                type="color"
+                placeholder="e.g., blue"
+                name="color"
+                value={state.color}
+                onChange={handleChange}
+              />
+            </div>
+          </form>
+        </section>
+        <div className="flex items-center justify-between">
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            type="button"
+            onClick={addItem}
+          >
+            Add Item
+          </button>
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            type="button"
+          >
+            Save Cycle
+          </button>
+        </div>
       </div>
+      <CycleCards list={items} />
     </div>
   );
 }
