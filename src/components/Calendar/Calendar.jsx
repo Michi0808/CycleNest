@@ -1,12 +1,7 @@
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 
-const events = [
-  { title: 'Meeting', start: new Date() },
-  { title: 'event 2', date: '2026-01-02' },
-];
-
-export default function Calendar() {
+export default function Calendar(events) {
   return (
     <div className="basis-full">
       <FullCalendar

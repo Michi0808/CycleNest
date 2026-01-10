@@ -1,10 +1,11 @@
 import './App.css';
-import Calendar from './components/calendar/calendar';
+import Calendar from './components/Calendar/Calendar';
 import Menubar from './components/Menubar/Menubar';
 import Cycle from './components/Cycle/Cycle';
 import ItemForm from './components/ItemForm/ItemForm';
 import { addEvent } from './calendarService';
 import { Route, Routes } from 'react-router-dom';
+import { useState } from 'react';
 
 function App() {
   // const event = {
@@ -29,6 +30,8 @@ function App() {
   //   },
   // };
 
+  const [events, setEvents] = useState([]);
+
   return (
     <>
       <div className="flex h-screen">
@@ -47,10 +50,13 @@ function App() {
 
         {/* Routes */}
         <Routes>
-          <Route path="/" element={<Calendar />} />
+          <Route path="/" element={<Calendar events={events} />} />
           <Route path="/cycle" element={<Cycle />}>
             <Route index element={<div></div>}></Route>
-            <Route path="new" element={<ItemForm />}></Route>
+            <Route
+              path="new"
+              element={<ItemForm setEvents={setEvents} />}
+            ></Route>
             <Route path=":cycleId" element={<div></div>}></Route>
           </Route>
         </Routes>

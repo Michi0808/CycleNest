@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import CycleCards from '../CycleCards/CycleCards';
+import Dialog from '@mui/material/Dialog';
 
-export default function ItemForm() {
+export default function ItemForm({ setEvents }) {
   const initialState = {
     CycleTitle: '',
     title: '',
@@ -11,6 +12,7 @@ export default function ItemForm() {
 
   const [state, setState] = useState(initialState);
   const [items, setItems] = useState([]);
+  const [open, setOpen] = useState(false);
 
   const handleChange = (e) => {
     let { name, value } = e.target;
@@ -30,6 +32,23 @@ export default function ItemForm() {
   const addItem = () => {
     const { title, length, color } = state;
     setItems([...items, { title: title, length: length, color: color }]);
+
+    //Clear the form
+    setState(initialState);
+  };
+
+  const saveItem = () => {
+    const testEvents = [
+      { title: 'XXXX', start: new Date() },
+      {
+        title: 'event 2',
+        date: '2026-01-02',
+        backgroundColor: '#34eb64',
+        borderColor: '#34eb64',
+      },
+    ];
+
+    setEvents((prev) => [...prev, ...testEvents]);
 
     //Clear the form
     setState(initialState);
@@ -108,12 +127,14 @@ export default function ItemForm() {
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="button"
+            onClick={saveItem}
           >
             Save Cycle
           </button>
         </div>
       </div>
       <CycleCards list={items} />
+      <Dialog open={open} onClose={handleClose}></Dialog>
     </div>
   );
 }
