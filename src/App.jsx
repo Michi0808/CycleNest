@@ -3,9 +3,11 @@ import Calendar from './components/Calendar/Calendar';
 import Menubar from './components/Menubar/Menubar';
 import Cycle from './components/Cycle/Cycle';
 import ItemForm from './components/ItemForm/ItemForm';
+import Register from './components/Register/Register';
 import { addEvent } from './calendarService';
 import { Route, Routes } from 'react-router-dom';
 import { useState } from 'react';
+import auth from './utils/auth.js';
 
 function App() {
   // const event = {
@@ -31,6 +33,8 @@ function App() {
   // };
 
   const [events, setEvents] = useState([]);
+  const initialState = auth.isAuthenticated();
+  const [isAuthenticated, setIsAuthenticated] = useState(initialState);
 
   return (
     <>
@@ -51,6 +55,10 @@ function App() {
         {/* Routes */}
         <Routes>
           <Route path="/" element={<Calendar events={events} />} />
+          <Route
+            path="/register"
+            element={<Register setIsAuthenticated={setIsAuthenticated} />}
+          />
           <Route path="/cycle" element={<Cycle />}>
             <Route index element={<div></div>}></Route>
             <Route

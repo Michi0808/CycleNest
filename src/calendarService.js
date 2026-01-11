@@ -27,3 +27,15 @@ export async function addEvent(event) {
     console.log(error);
   }
 }
+
+export async function register(user) {
+  return fetch(`${baseURL}/register`, {
+    method: 'POST',
+    credentials: 'include',
+    mode: 'cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(user),
+  })
+    .then((res) => res.json())
+    .catch((err) => console.log(err));
+}
