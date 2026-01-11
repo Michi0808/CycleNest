@@ -18,7 +18,6 @@ export default function Calendar(events) {
 function renderEventContent(eventInfo) {
   return (
     <>
-      <b>{eventInfo.timeText}</b>
       <i>{eventInfo.event.title}</i>
     </>
   );

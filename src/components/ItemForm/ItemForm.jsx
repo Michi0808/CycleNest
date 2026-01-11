@@ -1,13 +1,18 @@
 import { useState } from 'react';
 import CycleCards from '../CycleCards/CycleCards';
 import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
 export default function ItemForm({ setEvents }) {
   const initialState = {
     CycleTitle: '',
     title: '',
     length: '',
-    color: '#ffffff',
+    color: '#55b2fa',
   };
 
   const [state, setState] = useState(initialState);
@@ -38,20 +43,51 @@ export default function ItemForm({ setEvents }) {
   };
 
   const saveItem = () => {
-    const testEvents = [
-      { title: 'XXXX', start: new Date() },
-      {
-        title: 'event 2',
-        date: '2026-01-02',
-        backgroundColor: '#34eb64',
-        borderColor: '#34eb64',
-      },
-    ];
+    setOpen(true);
+  };
 
-    setEvents((prev) => [...prev, ...testEvents]);
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleConfirm = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const { date } = Object.fromEntries(formData.entries());
+
+    const addDays = (yyyyMMdd, days) => {
+      const [y, m, d] = yyyyMMdd.split('-').map(Number);
+      const dt = new Date(Date.UTC(y, m - 1, d));
+      dt.setUTCDate(dt.getUTCDate() + days);
+      return dt.toISOString().slice(0, 10);
+    };
+
+    let cursor = date;
+    let newItems = [];
+
+    for (const item of items) {
+      const startDate = cursor;
+      const endDate = addDays(cursor, item.length);
+
+      newItems.push({
+        title: item.title,
+        start: startDate,
+        end: endDate,
+        length: Number(item.length),
+        allDay: true,
+        backgroundColor: item.color,
+        borderColor: item.color,
+      });
+
+      cursor = endDate;
+    }
+
+    setEvents((prev) => [...prev, ...newItems]);
 
     //Clear the form
     setState(initialState);
+
+    handleClose();
   };
 
   return (
@@ -134,7 +170,31 @@ export default function ItemForm({ setEvents }) {
         </div>
       </div>
       <CycleCards list={items} />
-      <Dialog open={open} onClose={handleClose}></Dialog>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Set a start date</DialogTitle>
+        <DialogContent>
+          <form onSubmit={handleConfirm} id="confirm-form">
+            <TextField
+              autoFocus
+              required
+              margin="dense"
+              id="name"
+              name="date"
+              label="Start date"
+              slotProps={{ inputLabel: { shrink: true } }}
+              type="date"
+              fullWidth
+              variant="standard"
+            />
+          </form>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button type="submit" form="confirm-form">
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }
