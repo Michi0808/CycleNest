@@ -1,0 +1,12 @@
+import mongoose from './../db.js';
+
+export const User = mongoose.Schema({
+  email: {
+    type: String,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+});
