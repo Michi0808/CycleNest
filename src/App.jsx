@@ -32,7 +32,10 @@ function App() {
   //   },
   // };
 
+  //Events to display on the calendar
   const [events, setEvents] = useState([]);
+
+  // Track whether the user is logged in
   const initialState = auth.isAuthenticated();
   const [isAuthenticated, setIsAuthenticated] = useState(initialState);
 

@@ -29,7 +29,7 @@ app.use(
       maxAge: 1000 * 60 * 60, // 1hr
       sameSite: 'lax',
       httpOnly: true,
-      // we would want to set secure=true in a production environment
+      // In production, set secure: true so cookies are only sent over HTTPS
       secure: false,
     },
   })

@@ -9,6 +9,7 @@ export default function Menubar() {
   return (
     <Sidebar width={'270px'} showProfile={false}>
       <Logo
+        // TODO Fix Logo (follow up later)
         component={Link}
         href="/"
         img="https://adminmart.com/wp-content/uploads/2024/03/logo-admin-mart-news.png"

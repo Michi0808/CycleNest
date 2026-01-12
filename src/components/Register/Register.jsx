@@ -7,8 +7,6 @@ export default function Register(props) {
   const initialState = {
     email: '',
     password: '',
-    firstName: '',
-    lastName: '',
   };
 
   const navigate = useNavigate();
@@ -33,6 +31,7 @@ export default function Register(props) {
       setState(initialState);
     } else {
       props.setIsAuthenticated(true);
+      //Go to Calendar
       auth.login(() => navigate('/'));
     }
   };
@@ -47,14 +46,14 @@ export default function Register(props) {
       <form className="form" onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="name@mail.com"
+          placeholder="your email"
           name="email"
           value={state.email}
           onChange={handleChange}
         />
         <input
           type="password"
-          placeholder="supersecretthingy"
+          placeholder="your password"
           name="password"
           value={state.password}
           onChange={handleChange}

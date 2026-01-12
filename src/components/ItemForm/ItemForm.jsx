@@ -9,8 +9,11 @@ import Button from '@mui/material/Button';
 
 export default function ItemForm({ setEvents }) {
   const initialState = {
+    // Cycle title
     CycleTitle: '',
+    // Item title
     title: '',
+    // Item duration
     length: '',
     color: '#55b2fa',
   };
@@ -52,9 +55,12 @@ export default function ItemForm({ setEvents }) {
 
   const handleConfirm = (event) => {
     event.preventDefault();
+
+    // Get the start date from the dialog form
     const formData = new FormData(event.currentTarget);
     const { date } = Object.fromEntries(formData.entries());
 
+    // Work with date-only strings in YYYY-MM-DD (no timezone/time parts)
     const addDays = (yyyyMMdd, days) => {
       const [y, m, d] = yyyyMMdd.split('-').map(Number);
       const dt = new Date(Date.UTC(y, m - 1, d));
@@ -62,6 +68,7 @@ export default function ItemForm({ setEvents }) {
       return dt.toISOString().slice(0, 10);
     };
 
+    // Cursor for chaining item start/end dates
     let cursor = date;
     let newItems = [];
 
@@ -82,6 +89,7 @@ export default function ItemForm({ setEvents }) {
       cursor = endDate;
     }
 
+    // Add the generated items to the calendar
     setEvents((prev) => [...prev, ...newItems]);
 
     //Clear the form
