@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { register } from './../../calendarService.js';
 import auth from './../../utils/auth.js';
 
@@ -41,27 +41,36 @@ export default function Register(props) {
   };
 
   return (
-    <section>
-      <h2>Register</h2>
-      <form className="form" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="your email"
-          name="email"
-          value={state.email}
-          onChange={handleChange}
-        />
-        <input
-          type="password"
-          placeholder="your password"
-          name="password"
-          value={state.password}
-          onChange={handleChange}
-        />
-        <button className="form-submit" type="submit" disabled={validateForm()}>
-          &nbsp;Register&nbsp;
-        </button>
-      </form>
-    </section>
+    <div>
+      <section>
+        <h2>Register</h2>
+        <form className="form" onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="your email"
+            name="email"
+            value={state.email}
+            onChange={handleChange}
+          />
+          <input
+            type="password"
+            placeholder="your password"
+            name="password"
+            value={state.password}
+            onChange={handleChange}
+          />
+          <button
+            className="form-submit"
+            type="submit"
+            disabled={validateForm()}
+          >
+            &nbsp;Register&nbsp;
+          </button>
+        </form>
+      </section>
+      <p>
+        Already have an account? <Link to="/login">Login Here</Link>
+      </p>
+    </div>
   );
 }

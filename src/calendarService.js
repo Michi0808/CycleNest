@@ -13,6 +13,8 @@ export async function addEvent(event) {
     const response = await fetch(`${baseURL}/integration/${calendarID}`, {
       method: 'POST',
       body: JSON.stringify(body),
+      credentials: 'include',
+      mode: 'cors',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -35,6 +37,30 @@ export async function register(user) {
     mode: 'cors',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(user),
+  })
+    .then((res) => res.json())
+    .catch((err) => console.log(err));
+}
+
+export async function login(user) {
+  return fetch(`${baseURL}/login`, {
+    method: 'POST',
+    credentials: 'include',
+    mode: 'cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(user),
+  })
+    .then((res) => res.json())
+    .catch((err) => console.log(err));
+}
+
+export async function save(cycle) {
+  return fetch(`${baseURL}/cycle`, {
+    method: 'POST',
+    credentials: 'include',
+    mode: 'cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(cycle),
   })
     .then((res) => res.json())
     .catch((err) => console.log(err));

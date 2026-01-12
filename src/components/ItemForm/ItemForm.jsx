@@ -6,11 +6,10 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import { save } from '../../calendarService';
 
 export default function ItemForm({ setEvents }) {
   const initialState = {
-    // Cycle title
-    CycleTitle: '',
     // Item title
     title: '',
     // Item duration
@@ -19,7 +18,9 @@ export default function ItemForm({ setEvents }) {
   };
 
   const [state, setState] = useState(initialState);
+  const [cycleTitle, setCycleTitle] = useState('');
   const [items, setItems] = useState([]);
+  const isCycleTitleLocked = items.length > 0;
   const [open, setOpen] = useState(false);
 
   const handleChange = (e) => {
@@ -41,8 +42,7 @@ export default function ItemForm({ setEvents }) {
     const { title, length, color } = state;
     setItems([...items, { title: title, length: length, color: color }]);
 
-    //Clear the form
-    setState(initialState);
+    setState({ title: '', length: '', color: '#55b2fa' });
   };
 
   const saveItem = () => {
@@ -53,7 +53,7 @@ export default function ItemForm({ setEvents }) {
     setOpen(false);
   };
 
-  const handleConfirm = (event) => {
+  const handleConfirm = async (event) => {
     event.preventDefault();
 
     // Get the start date from the dialog form
@@ -70,6 +70,7 @@ export default function ItemForm({ setEvents }) {
 
     // Cursor for chaining item start/end dates
     let cursor = date;
+    const originalStartDate = date;
     let newItems = [];
 
     for (const item of items) {
@@ -89,11 +90,21 @@ export default function ItemForm({ setEvents }) {
       cursor = endDate;
     }
 
-    // Add the generated items to the calendar
-    setEvents((prev) => [...prev, ...newItems]);
+    const cycle = { cycleTitle, startDate: originalStartDate, items: newItems };
+    const res = await save(cycle);
+    if (res.error) {
+      alert(`${res.message}`);
+      return;
+    } else {
+      // Add the generated items to the calendar
+      setEvents((prev) => [...prev, ...newItems]);
 
-    //Clear the form
-    setState(initialState);
+      setItems([]);
+
+      //Clear the form
+      setCycleTitle('');
+      setState(initialState);
+    }
 
     handleClose();
   };
@@ -115,8 +126,9 @@ export default function ItemForm({ setEvents }) {
                 type="text"
                 placeholder="e.g., Weekly Routine"
                 name="CycleTitle"
-                value={state.CycleTitle}
-                onChange={handleChange}
+                value={cycleTitle}
+                disabled={isCycleTitleLocked}
+                onChange={(e) => setCycleTitle(e.target.value)}
               />
             </div>
             <div className="mb-4">

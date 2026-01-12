@@ -3,6 +3,7 @@ import Calendar from './components/Calendar/Calendar';
 import Cycle from './components/Cycle/Cycle';
 import ItemForm from './components/ItemForm/ItemForm';
 import Register from './components/Register/Register';
+import Login from './components/Login/Login.jsx';
 import { addEvent } from './calendarService';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useState } from 'react';
@@ -73,7 +74,10 @@ function App() {
             path="/register"
             element={<Register setIsAuthenticated={setIsAuthenticated} />}
           />
-          {/* Login here */}
+          <Route
+            path="/login"
+            element={<Login setIsAuthenticated={setIsAuthenticated} />}
+          />
         </Route>
 
         {/* Protected routes (auth required) */}

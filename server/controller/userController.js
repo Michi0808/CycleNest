@@ -22,3 +22,18 @@ export const create = async (req, res) => {
     res.status(400).send({ error, message: 'Could not create user' });
   }
 };
+
+export const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email: email });
+    const validatedPass = await bcrypt.compare(password, user.password);
+    if (!validatedPass) throw new Error();
+    req.session.userId = user._id;
+    res.status(200).send(user);
+  } catch (error) {
+    res
+      .status(401)
+      .send({ error: '401', message: 'Username or password is incorrect' });
+  }
+};
