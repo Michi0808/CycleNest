@@ -1,13 +1,15 @@
 import './App.css';
 import Calendar from './components/Calendar/Calendar';
-import Menubar from './components/Menubar/Menubar';
 import Cycle from './components/Cycle/Cycle';
 import ItemForm from './components/ItemForm/ItemForm';
 import Register from './components/Register/Register';
 import { addEvent } from './calendarService';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { useState } from 'react';
 import auth from './utils/auth.js';
+import PublicLayout from './components/PublicLayout/PublicLayout.jsx';
+import RequireAuth from './components/RequireAuth/RequireAuth.jsx';
+import AppLayout from './components/AppLayout/AppLayout.jsx';
 
 function App() {
   // const event = {
@@ -41,9 +43,8 @@ function App() {
 
   return (
     <>
-      <div className="flex h-screen">
-        {/* API Test */}
-        {/* <button
+      {/* API Test */}
+      {/* <button
           type="button"
           onClick={() => {
             addEvent(event);
@@ -52,26 +53,44 @@ function App() {
           Add Event
         </button> */}
 
-        {/* Navigation */}
-        <Menubar />
+      {/* Routes */}
+      <Routes>
+        {/* Entry route: redirect to the right start page based on auth state */}
+        <Route
+          path="/"
+          element={
+            isAuthenticated ? (
+              <Navigate to="/calendar" replace />
+            ) : (
+              <Navigate to="/register" replace />
+            )
+          }
+        />
 
-        {/* Routes */}
-        <Routes>
-          <Route path="/" element={<Calendar events={events} />} />
+        {/* Public routes (no sidebar/layout) */}
+        <Route element={<PublicLayout />}>
           <Route
             path="/register"
             element={<Register setIsAuthenticated={setIsAuthenticated} />}
           />
-          <Route path="/cycle" element={<Cycle />}>
-            <Route index element={<div></div>}></Route>
-            <Route
-              path="new"
-              element={<ItemForm setEvents={setEvents} />}
-            ></Route>
-            <Route path=":cycleId" element={<div></div>}></Route>
+          {/* Login here */}
+        </Route>
+
+        {/* Protected routes (auth required) */}
+        <Route element={<RequireAuth isAuthenticated={isAuthenticated} />}>
+          <Route element={<AppLayout isAuthenticated={isAuthenticated} />}>
+            <Route path="/calendar" element={<Calendar events={events} />} />
+            <Route path="/cycle" element={<Cycle />}>
+              <Route index element={<div></div>}></Route>
+              <Route
+                path="new"
+                element={<ItemForm setEvents={setEvents} />}
+              ></Route>
+              <Route path=":cycleId" element={<div></div>}></Route>
+            </Route>
           </Route>
-        </Routes>
-      </div>
+        </Route>
+      </Routes>
     </>
   );
 }

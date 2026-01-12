@@ -32,7 +32,7 @@ export default function Register(props) {
     } else {
       props.setIsAuthenticated(true);
       //Go to Calendar
-      auth.login(() => navigate('/'));
+      auth.login(() => navigate('/calendar'));
     }
   };
 
