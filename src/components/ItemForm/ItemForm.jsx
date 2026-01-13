@@ -7,6 +7,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { save } from '../../calendarService';
+import { useOutletContext } from 'react-router-dom';
 
 export default function ItemForm({ setEvents }) {
   const initialState = {
@@ -17,6 +18,7 @@ export default function ItemForm({ setEvents }) {
     color: '#55b2fa',
   };
 
+  const { bumpCycles } = useOutletContext();
   const [state, setState] = useState(initialState);
   const [cycleTitle, setCycleTitle] = useState('');
   const [items, setItems] = useState([]);
@@ -98,6 +100,8 @@ export default function ItemForm({ setEvents }) {
     } else {
       // Add the generated items to the calendar
       setEvents((prev) => [...prev, ...newItems]);
+
+      bumpCycles();
 
       setItems([]);
 

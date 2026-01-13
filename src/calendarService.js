@@ -65,3 +65,14 @@ export async function save(cycle) {
     .then((res) => res.json())
     .catch((err) => console.log(err));
 }
+
+export async function getCycles() {
+  return fetch(`${baseURL}/cycle`, {
+    method: 'GET',
+    credentials: 'include',
+    mode: 'cors',
+    headers: { 'Content-Type': 'application/json' },
+  })
+    .then((res) => res.json())
+    .catch((err) => console.log(err));
+}

@@ -36,3 +36,16 @@ export async function save(req, res) {
     return res.status(500).json({ message: 'Failed to save cycle' });
   }
 }
+
+export async function get(req, res) {
+  try {
+    const userId = req.session?.userId;
+    if (!userId) return res.status(401).json({ message: 'Unauthorized' });
+
+    const cycles = await Cycle.find({ userId }).sort({ createdAt: -1 });
+
+    return res.status(200).json({ cycles });
+  } catch (err) {
+    return res.status(500).json({ message: 'Failed to get cycles' });
+  }
+}
