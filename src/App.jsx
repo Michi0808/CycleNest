@@ -4,9 +4,9 @@ import Cycle from './components/Cycle/Cycle';
 import ItemForm from './components/ItemForm/ItemForm';
 import Register from './components/Register/Register';
 import Login from './components/Login/Login.jsx';
-import { addEvent } from './calendarService';
+import { addEvent, getCycles } from './calendarService';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import auth from './utils/auth.js';
 import PublicLayout from './components/PublicLayout/PublicLayout.jsx';
 import RequireAuth from './components/RequireAuth/RequireAuth.jsx';
@@ -41,6 +41,31 @@ function App() {
   // Track whether the user is logged in
   const initialState = auth.isAuthenticated();
   const [isAuthenticated, setIsAuthenticated] = useState(initialState);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setEvents([]);
+      return;
+    }
+
+    getCycles().then((data) => {
+      const cycles = data?.cycles ?? [];
+
+      const loadedEvents = cycles.flatMap((cycle) => {
+        const items = cycle.items ?? [];
+        return items.map((it) => ({
+          title: it.title,
+          start: it.start,
+          end: it.end,
+          allDay: true,
+          backgroundColor: it.color ?? it.backgroundColor,
+          borderColor: it.color ?? it.borderColor,
+        }));
+      });
+
+      setEvents(loadedEvents);
+    });
+  }, [isAuthenticated]);
 
   return (
     <>
