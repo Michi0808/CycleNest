@@ -5,7 +5,7 @@ import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Link } from 'react-router-dom';
 
-export default function Menubar() {
+export default function Menubar({ onGoogleSync }) {
   return (
     <Sidebar width={'270px'} showProfile={false}>
       <Logo
@@ -16,16 +16,22 @@ export default function Menubar() {
       >
         AdminMart
       </Logo>
-      <MenuItem icon={<Cached />} component={Link} link="/cycle">
-        Cycle Settings
-      </MenuItem>
-      <MenuItem icon={<Google />} component={Link} link="/test">
-        Google Sync
-      </MenuItem>
-      <MenuItem icon={<NotificationsActiveIcon />} component={Link} link="/ana">
-        Notifications
-      </MenuItem>
-      <MenuItem icon={<LogoutIcon />}>Sign Out</MenuItem>
+      <Menu>
+        <MenuItem icon={<Cached />} component={Link} link="/cycle">
+          Cycle Settings
+        </MenuItem>
+        <MenuItem icon={<Google />} component={Link} link="/google-sync">
+          Google Sync
+        </MenuItem>
+        {/* <MenuItem
+          icon={<NotificationsActiveIcon />}
+          component={Link}
+          link="/ana"
+        >
+          Notifications
+        </MenuItem> */}
+        <MenuItem icon={<LogoutIcon />}>Sign Out</MenuItem>
+      </Menu>
     </Sidebar>
   );
 }

@@ -11,30 +11,9 @@ import auth from './utils/auth.js';
 import PublicLayout from './components/PublicLayout/PublicLayout.jsx';
 import RequireAuth from './components/RequireAuth/RequireAuth.jsx';
 import AppLayout from './components/AppLayout/AppLayout.jsx';
+import GoogleSync from './components/GoogleSync/GoogleSync.jsx';
 
 function App() {
-  // const event = {
-  //   summary: 'Hello World',
-  //   location: '',
-  //   start: {
-  //     dateTime: '2025-12-31T09:00:00-07:00',
-  //     timeZone: 'America/Los_Angeles',
-  //   },
-  //   end: {
-  //     dateTime: '2025-12-31T17:00:00-07:00',
-  //     timeZone: 'America/Los_Angeles',
-  //   },
-  //   recurrence: ['RRULE:FREQ=DAILY;COUNT=2'],
-  //   attendees: [],
-  //   reminders: {
-  //     useDefault: false,
-  //     overrides: [
-  //       { method: 'email', minutes: 24 * 60 },
-  //       { method: 'popup', minutes: 10 },
-  //     ],
-  //   },
-  // };
-
   //Events to display on the calendar
   const [events, setEvents] = useState([]);
 
@@ -69,16 +48,6 @@ function App() {
 
   return (
     <>
-      {/* API Test */}
-      {/* <button
-          type="button"
-          onClick={() => {
-            addEvent(event);
-          }}
-        >
-          Add Event
-        </button> */}
-
       {/* Routes */}
       <Routes>
         {/* Entry route: redirect to the right start page based on auth state */}
@@ -109,6 +78,7 @@ function App() {
         <Route element={<RequireAuth isAuthenticated={isAuthenticated} />}>
           <Route element={<AppLayout isAuthenticated={isAuthenticated} />}>
             <Route path="/calendar" element={<Calendar events={events} />} />
+            <Route path="/google-sync" element={<GoogleSync />} />
             <Route path="/cycle" element={<Cycle />}>
               <Route index element={<div></div>}></Route>
               <Route

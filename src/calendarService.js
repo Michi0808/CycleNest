@@ -27,6 +27,7 @@ export async function addEvent(event) {
     return await response.json();
   } catch (error) {
     console.log(error);
+    throw error;
   }
 }
 
