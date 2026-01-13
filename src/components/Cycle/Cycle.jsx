@@ -10,7 +10,7 @@ export default function Cycle() {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen gap-12">
       <ItemList cyclesVersion={cyclesVersion} />
       <Outlet context={{ bumpCycles }} />
     </div>

@@ -60,7 +60,8 @@ export default function ItemForm({ setEvents }) {
 
     // Get the start date from the dialog form
     const formData = new FormData(event.currentTarget);
-    const { date } = Object.fromEntries(formData.entries());
+    const { date, repeatCount } = Object.fromEntries(formData.entries());
+    const repeats = Math.max(1, Number(repeatCount || 1));
 
     // Work with date-only strings in YYYY-MM-DD (no timezone/time parts)
     const addDays = (yyyyMMdd, days) => {
@@ -92,14 +93,39 @@ export default function ItemForm({ setEvents }) {
       cursor = endDate;
     }
 
-    const cycle = { cycleTitle, startDate: originalStartDate, items: newItems };
+    // 1 cycle length in days (= how much to shift per repeat)
+    const cycleLengthDays = items.reduce(
+      (sum, it) => sum + Number(it.length || 0),
+      0
+    );
+
+    // Make N repeats (including the first one)
+    let repeatedEvents = [];
+
+    for (let r = 0; r < repeats; r++) {
+      const shift = cycleLengthDays * r;
+
+      for (const ev of newItems) {
+        repeatedEvents.push({
+          ...ev,
+          start: addDays(ev.start, shift),
+          end: addDays(ev.end, shift),
+        });
+      }
+    }
+
+    const cycle = {
+      cycleTitle,
+      startDate: originalStartDate,
+      items: repeatedEvents,
+    };
     const res = await save(cycle);
     if (res.error) {
       alert(`${res.message}`);
       return;
     } else {
       // Add the generated items to the calendar
-      setEvents((prev) => [...prev, ...newItems]);
+      setEvents((prev) => [...prev, ...repeatedEvents]);
 
       bumpCycles();
 
@@ -195,7 +221,7 @@ export default function ItemForm({ setEvents }) {
       </div>
       <CycleCards list={items} />
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Set a start date</DialogTitle>
+        <DialogTitle>Set a start date and a repeat count</DialogTitle>
         <DialogContent>
           <form onSubmit={handleConfirm} id="confirm-form">
             <TextField
@@ -209,6 +235,18 @@ export default function ItemForm({ setEvents }) {
               type="date"
               fullWidth
               variant="standard"
+            />
+            <TextField
+              required
+              margin="dense"
+              id="repeatCount"
+              name="repeatCount"
+              label="Repeat count"
+              slotProps={{ inputLabel: { shrink: true } }}
+              type="number"
+              fullWidth
+              variant="standard"
+              defaultValue={4}
             />
           </form>
         </DialogContent>
