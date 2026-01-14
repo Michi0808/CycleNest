@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./public/logo-cycle-nest.png" alt="CycleNest logo" width="182" height="34" />
+  <img src="./public/logo-cycle-nest_o.png" alt="CycleNest logo" width="182" height="34" />
 </p>
 
 <h1 align="center">CycleNest</h1>
